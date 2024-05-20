@@ -31,6 +31,11 @@
 		overflow: hidden;
 		padding: 10px 0;
 		width: 160px;
+		display: none;
+
+		&.active {
+			display: block;
+		}
 
 		ul {
 			overflow: hidden;

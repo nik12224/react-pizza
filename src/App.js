@@ -1,7 +1,6 @@
-// import logo from '../public/assets/pizza-logo.svg'
 import Categories from './components/Categories/Categories'
 import Header from './components/Header/Header'
-import Pizza from './components/Pizza/Pizza'
+import Pizzas from './components/Pizzas/Pizzas'
 import './scss/app.scss'
 
 function App() {
@@ -12,9 +11,7 @@ function App() {
 				<div className='container'>
 					<Categories />
 					<h2 className='content__title'>Все пиццы</h2>
-					<div className='content__items'>
-						<Pizza />
-					</div>
+					<Pizzas />
 				</div>
 			</div>
 		</div>

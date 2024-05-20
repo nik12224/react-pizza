@@ -1,6 +1,9 @@
-import React from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useState } from 'react'
 
 const Sort = () => {
+	const [sortPizza, useSortPizza] = useState(false)
+
 	return (
 		<div className='sort'>
 			<div className='sort__label'>
@@ -16,9 +19,9 @@ const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span>популярности</span>
+				<span onClick={() => useSortPizza(!sortPizza)}>популярности</span>
 			</div>
-			<div className='sort__popup'>
+			<div className={`sort__popup ${sortPizza ? 'active' : ''}`}>
 				<ul>
 					<li className='active'>популярности</li>
 					<li>цене</li>
