@@ -19,6 +19,8 @@ const Pizza = ({
 		setCount(count + 1)
 	}
 
+	const typeNames = ['тонкое', 'традиционное']
+
 	return (
 		<div className='pizza-block'>
 			<img
@@ -29,12 +31,12 @@ const Pizza = ({
 			<h4 className='pizza-block__title'>{title}</h4>
 			<div className='pizza-block__selector'>
 				<ul>
-					{types.map((type, index) => {
+					{types.map(index => {
 						return (
 							<li
 								onClick={() => setTypePizza(index)}
 								className={typePizza === index && 'active'}>
-								{type}
+								{typeNames[index]}
 							</li>
 						)
 					})}
