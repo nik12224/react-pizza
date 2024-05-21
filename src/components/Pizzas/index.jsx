@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Pizza from '../Pizza/Pizza'
+import { Pizza } from '../../components'
+import Loader from './Loader'
 const API_URL = 'https://664b8e2535bbda10987d5fa1.mockapi.io/items'
 
-const Pizzas = () => {
+export const Pizzas = () => {
 	const [piza, setPizza] = useState([])
 	const [error, setError] = useState('')
 	const [isLoading, setIsLoading] = useState(true)
@@ -20,20 +21,16 @@ const Pizzas = () => {
 	}
 	return (
 		<div className='content__items'>
-			{isLoading ? (
-				<h1>Загрузка пицц...</h1>
-			) : (
-				piza.map(pizza => {
-					return (
-						<Pizza
-							key={pizza.id}
-							{...pizza}
-						/>
-					)
-				})
-			)}
+			{isLoading
+				? [...new Array(8)].map((_, index) => <Loader key={index} />)
+				: piza.map(pizza => {
+						return (
+							<Pizza
+								key={pizza.id}
+								{...pizza}
+							/>
+						)
+				  })}
 		</div>
 	)
 }
-
-export default Pizzas

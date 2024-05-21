@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Sort from '../Sort/Sort'
+import { Sort } from '../../components'
 
-const Categories = () => {
+export const Categories = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
 
 	const categories = [
@@ -33,5 +33,3 @@ const Categories = () => {
 		</div>
 	)
 }
-
-export default Categories

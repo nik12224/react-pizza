@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react'
 
-const Sort = () => {
+export const Sort = () => {
 	const [open, useOpen] = useState(false)
 	const [selected, useSelected] = useState(0)
 
@@ -47,5 +47,3 @@ const Sort = () => {
 		</div>
 	)
 }
-
-export default Sort

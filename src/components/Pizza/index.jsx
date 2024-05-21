@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Pizza = ({
+export const Pizza = ({
 	imageUrl,
 	title,
 	types,
@@ -73,5 +73,3 @@ const Pizza = ({
 		</div>
 	)
 }
-
-export default Pizza
