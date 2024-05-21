@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-import { Sort } from '../../components'
+import React from 'react'
 
-export const Categories = () => {
-	const [activeIndex, setActiveIndex] = useState(0)
-
+export const Categories = ({ value, onClickCategory }) => {
 	const categories = [
 		'Все',
 		'Мясные',
@@ -13,23 +10,20 @@ export const Categories = () => {
 		'Закрытые',
 	]
 	return (
-		<div className='content__top'>
-			<div className='categories'>
-				<ul>
-					{categories.map((value, index) => {
-						return (
-							<li
-								onClick={() => {
-									setActiveIndex(index)
-								}}
-								className={activeIndex === index && 'active'}>
-								{value}
-							</li>
-						)
-					})}
-				</ul>
-			</div>
-			<Sort />
+		<div className='categories'>
+			<ul>
+				{categories.map((categoryName, index) => {
+					return (
+						<li
+							onClick={() => {
+								onClickCategory(index)
+							}}
+							className={value === index && 'active'}>
+							{categoryName}
+						</li>
+					)
+				})}
+			</ul>
 		</div>
 	)
 }

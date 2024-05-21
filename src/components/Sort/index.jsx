@@ -1,14 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react'
 
-export const Sort = () => {
+export const Sort = ({ value, onChangeSort }) => {
 	const [open, useOpen] = useState(false)
-	const [selected, useSelected] = useState(0)
 
-	const list = ['популярности', 'цене', 'алфавиту']
+	const list = [
+		{ name: 'популярности (DESC)', sortProperty: 'rating' },
+		{ name: 'популярности (ASC)', sortProperty: '-rating' },
+		{ name: 'цене (DESC)', sortProperty: 'price' },
+		{ name: 'цене (ASC)', sortProperty: '-price' },
+		{ name: 'алфавиту (DESC)', sortProperty: 'title' },
+		{ name: 'алфавиту (ASC)', sortProperty: '-title' },
+	]
 
 	const onClickListItem = i => {
-		useSelected(i)
+		onChangeSort(i)
 		useOpen(false)
 	}
 
@@ -27,18 +33,18 @@ export const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => useOpen(!open)}>{list[selected]}</span>
+				<span onClick={() => useOpen(!open)}>{value.name}</span>
 			</div>
 			<div className={`sort__popup ${open ? 'active' : ''}`}>
 				<ul>
-					{list.map((item, index) => {
+					{list.map((obj, index) => {
 						return (
 							<li
 								onClick={() => {
-									onClickListItem(index)
+									onClickListItem(obj)
 								}}
-								className={selected === index && 'active'}>
-								{item}
+								className={value.sortProperty === obj.sortProperty && 'active'}>
+								{obj.name}
 							</li>
 						)
 					})}
