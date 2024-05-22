@@ -1,13 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import { Header } from '../components'
 
-const MainLayout = ({ searchValue, setsearchValue }) => {
+const MainLayout = () => {
 	return (
 		<>
-			<Header
-				searchValue={searchValue}
-				setsearchValue={setsearchValue}
-			/>
+			<Header />
 			<Outlet />
 		</>
 	)

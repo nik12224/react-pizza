@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
 
-export const Search = ({ searchValue, setsearchValue }) => {
+export const Search = () => {
+	const { searchValue, setsearchValue } = useContext(SearchContext)
 	return (
 		<input
 			value={searchValue}

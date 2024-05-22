@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { SearchContext } from '../App'
 import { Categories, Pizza, Sort } from '../components'
 import Loader from '../components/Pizzas/Loader'
 import Paginate from '../components/Paginate/Paginate'
 
-// const API_URL = ;
-
-const Home = ({ searchValue }) => {
+const Home = () => {
+	const { searchValue } = useContext(SearchContext)
 	const [piza, setPizza] = useState([])
 	const [error, setError] = useState('')
 	const [isLoading, setIsLoading] = useState(true)
@@ -31,10 +31,10 @@ const Home = ({ searchValue }) => {
 		const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
 		const search = searchValue ? `&search=${searchValue}` : ''
 
+		const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sort}&order=${order}${search}`
+
 		setIsLoading(true)
-		fetch(
-			`https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sort}&order=${order}${search}`
-		)
+		fetch(API_URL)
 			.then(response => response.json())
 			.then(piza => setPizza(piza))
 			.catch(error => setError(error.message))
