@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Categories, Pizza, Sort } from '../components'
 import Loader from '../components/Pizzas/Loader'
+import Paginate from '../components/Paginate/Paginate'
 
 // const API_URL = ;
 
@@ -9,10 +10,12 @@ const Home = ({ searchValue }) => {
 	const [error, setError] = useState('')
 	const [isLoading, setIsLoading] = useState(true)
 	const [categoryId, setCategoryId] = useState(0)
+	const [currentPage, setcurrentPage] = useState(1)
 	const [sortType, setSortType] = useState({
 		name: 'популярности',
 		sortProperty: 'rating',
 	})
+
 	const skeletons = [...new Array(8)].map((_, index) => <Loader key={index} />)
 
 	const pizzas = piza.map(pizza => (
@@ -30,13 +33,14 @@ const Home = ({ searchValue }) => {
 
 		setIsLoading(true)
 		fetch(
-			`https://664b8e2535bbda10987d5fa1.mockapi.io/items?${category}&sortBy=${sort}&order=${order}${search}`
+			`https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sort}&order=${order}${search}`
 		)
 			.then(response => response.json())
 			.then(piza => setPizza(piza))
 			.catch(error => setError(error.message))
 			.finally(() => setIsLoading(false))
-	}, [categoryId, sortType, searchValue])
+		// window.scrollTo(0, 0)
+	}, [categoryId, sortType, searchValue, currentPage])
 
 	if (error) {
 		return <h1>Erorr: {error}</h1>
@@ -59,6 +63,13 @@ const Home = ({ searchValue }) => {
 				</div>
 				<h2 className='content__title'>Все пиццы</h2>
 				<div className='content__items'>{isLoading ? skeletons : pizzas}</div>
+				<div className='content__pagintaion'>
+					<Paginate
+						onChangePage={number => {
+							setcurrentPage(number)
+						}}
+					/>
+				</div>
 			</div>
 		</div>
 	)
