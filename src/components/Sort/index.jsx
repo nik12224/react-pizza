@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setSort } from '../../redux/slices/filterSlice'
 
@@ -14,6 +14,7 @@ export const sortList = [
 
 export const Sort = () => {
 	const sort = useSelector(state => state.filter.sort)
+	const sortRef = useRef()
 
 	const dispatch = useDispatch()
 
@@ -21,15 +22,45 @@ export const Sort = () => {
 	// 	dispatch(setSort(id))
 	// }
 
-	const [open, useOpen] = useState(false)
+	const [open, setOpen] = useState(false)
 
 	const onClickListItem = obj => {
 		dispatch(setSort(obj))
-		useOpen(false)
+		setOpen(false)
 	}
 
+	useEffect(() => {
+		const handleBodyClick = event => {
+			// Получаем текущий элемент, на который был совершен клик
+			let target = event.target
+
+			// Проверяем, является ли цель события или ее родительский элемент элементом, на который указывает sortRef
+			while (target !== null) {
+				if (target === sortRef.current) {
+					// Если цель события - это тот самый элемент, мы ничего не делаем и прерываем цикл
+					return
+				}
+				target = target.parentNode // Переходим к родительскому элементу
+			}
+
+			// Если мы дошли до конца цикла и не нашли совпадения, значит, клик произошел вне интересующего нас элемента
+			console.log('Клик по body, кроме sortRef.current')
+			setOpen(false)
+			// Здесь можно добавить логику, которую нужно выполнить при клике вне sortRef.current
+		}
+
+		// Добавляем обработчик событий клика к body
+		document.body.addEventListener('click', handleBodyClick)
+
+		return () => {
+			document.body.removeEventListener('click', handleBodyClick)
+		}
+	}, [])
+
+	// console.log(sortRef)
+
 	return (
-		<div className="sort">
+		<div ref={sortRef} className="sort">
 			<div className="sort__label">
 				<svg
 					width="10"
@@ -43,7 +74,7 @@ export const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => useOpen(!open)}>{sort.name}</span>
+				<span onClick={() => setOpen(!open)}>{sort.name}</span>
 			</div>
 			<div className={`sort__popup ${open ? 'active' : ''}`}>
 				<ul>

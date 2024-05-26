@@ -28,9 +28,6 @@ body {
 	}
 
 	&__items {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		grid-template-rows: repeat(2, 1fr);
@@ -58,6 +55,12 @@ body {
 			flex-direction: column-reverse;
 			row-gap: 30px;
 		}
+	}
+
+	&__cart--items {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
 	}
 }
 
@@ -299,16 +302,17 @@ body {
 
 	&--empty {
 		margin: 0 auto;
-		width: 560px;
+		width: 620px;
 		text-align: center;
 
 		h2 {
 			font-size: 32px;
-			margin-bottom: 10px;
+			font-weight: 700;
+			margin-bottom: 15px;
 		}
 
 		p {
-			font-size: 18px;
+			font-size: 20px;
 			line-height: 145.4%;
 			letter-spacing: 0.01em;
 			color: #777777;

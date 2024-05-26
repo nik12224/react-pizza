@@ -40,8 +40,8 @@ const Home = () => {
 		dispatch(setCurrentPage(number))
 	}
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const fetchPizzas = () => {
+		setIsLoading(true)
 		const category = categoryId > 0 ? `category=${categoryId}` : ''
 		const sortBy = sort.sortProperty.replace('-', '')
 		const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
@@ -49,7 +49,6 @@ const Home = () => {
 
 		const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
 
-		setIsLoading(true)
 		// fetch(API_URL)
 		// 	.then(response => response.json())
 		// 	.then(piza => setPizza(piza))
@@ -60,6 +59,8 @@ const Home = () => {
 			setIsLoading(false)
 		})
 	}
+
+	useEffect(() => {})
 
 	useEffect(() => {
 		if (isMounted.current) {
@@ -95,7 +96,7 @@ const Home = () => {
 		}
 
 		isSearch.current = false
-	}, [categoryId, sort.sortProperty, searchValue, currentPage, fetchPizzas])
+	}, [categoryId, sort.sortProperty, searchValue, currentPage])
 
 	// if (error) {
 	// 	return <h1>Erorr: {error}</h1>
