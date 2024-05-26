@@ -84,7 +84,8 @@ export const Sort = () => {
 								onClick={() => {
 									onClickListItem(obj)
 								}}
-								className={sort.sortProperty === obj.sortProperty && 'active'}>
+								className={sort.sortProperty === obj.sortProperty ? 'active' : undefined}
+								key={index}>
 								{obj.name}
 							</li>
 						)

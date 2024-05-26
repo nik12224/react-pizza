@@ -4,13 +4,15 @@ import { addItem } from '../../redux/slices/cartSlice'
 
 const typeNames = ['тонкое', 'традиционное']
 
-export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
+export const Pizza = ({ imageUrl, title, types, sizes, price, id }) => {
 	const dispatch = useDispatch()
 	const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id))
 	const [sizePizza, setSizePizza] = useState(0)
 	const [typePizza, setTypePizza] = useState(0)
 
 	const addedCount = cartItem ? cartItem.count : 0
+
+	console.log('Рендер пицц')
 
 	const onClickAdd = () => {
 		const item = {
@@ -26,6 +28,7 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
 
 	return (
 		<div className="pizza">
+			{console.log('Рендер пицц')}
 			<div className="pizza-block">
 				<img className="pizza-block__image" src={imageUrl} alt="Pizza" />
 				<h4 className="pizza-block__title">{title}</h4>
@@ -33,7 +36,10 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
 					<ul>
 						{types.map(index => {
 							return (
-								<li onClick={() => setTypePizza(index)} className={typePizza === index && 'active'}>
+								<li
+									onClick={() => setTypePizza(index)}
+									className={typePizza === index && 'active'}
+									key={index}>
 									{typeNames[index]}
 								</li>
 							)
@@ -42,7 +48,10 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
 					<ul>
 						{sizes.map((size, index) => {
 							return (
-								<li onClick={() => setSizePizza(index)} className={sizePizza === index && 'active'}>
+								<li
+									onClick={() => setSizePizza(index)}
+									className={sizePizza === index && 'active'}
+									key={index}>
 									{size} см.
 								</li>
 							)
