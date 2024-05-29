@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import qs from 'qs'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice'
 import { SearchContext } from '../App'
+import { fetchPizzaStatus } from '../redux/slices/pizzaSlice'
 import { Categories, Pizza, Sort } from '../components'
 import { sortList } from '../components/Sort/index'
 import Loader from '../components/Pizzas/Loader'
@@ -12,6 +12,7 @@ import Paginate from '../components/Paginate/Paginate'
 
 const Home = () => {
 	const { categoryId, sort, currentPage } = useSelector(state => state.filter)
+	const { items, status } = useSelector(state => state.pizza)
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -19,18 +20,15 @@ const Home = () => {
 	const isMounted = useRef(false)
 
 	const { searchValue } = useContext(SearchContext)
-	const [piza, setPizza] = useState([])
+	// const [piza, setPizza] = useState([])
 	// const [error, setError] = useState('')
-	const [isLoading, setIsLoading] = useState(true)
+	// const [isLoading, setIsLoading] = useState(true)
 	// const [categoryId, setCategoryId] = useState(0)
 	// const [currentPage, setcurrentPage] = useState(1)
 	// const [sortType, setSortType] = useState({
 	// 	name: 'популярности',
 	// 	sortProperty: 'rating',
 	// })
-	const skeletons = [...new Array(8)].map((_, index) => <Loader key={index} />)
-
-	const pizzas = piza.map(pizza => <Pizza key={pizza.id} {...pizza} />)
 
 	const onChangeCategory = id => {
 		dispatch(setCategoryId(id))
@@ -40,27 +38,31 @@ const Home = () => {
 		dispatch(setCurrentPage(number))
 	}
 
-	const fetchPizzas = () => {
-		setIsLoading(true)
+	const getPizza = () => {
 		const category = categoryId > 0 ? `category=${categoryId}` : ''
 		const sortBy = sort.sortProperty.replace('-', '')
 		const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
 		const search = searchValue ? `&search=${searchValue}` : ''
 
-		const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+		// const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
 
 		// fetch(API_URL)
 		// 	.then(response => response.json())
 		// 	.then(piza => setPizza(piza))
 		// 	.catch(error => setError(error.message))
 		// 	.finally(() => setIsLoading(false))
-		axios.get(API_URL).then(response => {
-			setPizza(response.data)
-			setIsLoading(false)
-		})
+		// const { data } = axios.get(API_URL)
+		dispatch(
+			fetchPizzaStatus({
+				currentPage,
+				category,
+				sortBy,
+				order,
+				search,
+			}),
+		)
+		window.scrollTo(0, 0)
 	}
-
-	useEffect(() => {})
 
 	useEffect(() => {
 		if (isMounted.current) {
@@ -92,7 +94,7 @@ const Home = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 		if (!isSearch.current) {
-			fetchPizzas()
+			getPizza()
 		}
 
 		isSearch.current = false
@@ -102,6 +104,9 @@ const Home = () => {
 	// 	return <h1>Erorr: {error}</h1>
 	// }
 
+	const skeletons = [...new Array(8)].map((_, index) => <Loader key={index} />)
+	const pizzas = items.map(pizza => <Pizza key={pizza.id} {...pizza} />)
+
 	return (
 		<div className="content">
 			<div className="container">
@@ -110,7 +115,15 @@ const Home = () => {
 					<Sort />
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
-				<div className="content__items">{isLoading ? skeletons : pizzas}</div>
+				{status === 'error' ? (
+					<div className="content__error-info">
+						<h2>Произошла ошибка 😕</h2>
+						<p>К сожалению, не удалось получить пиццы. Попробуйте повторить попытку позже.</p>
+					</div>
+				) : (
+					<div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
+				)}
+
 				<div className="content__pagintaion">
 					<Paginate currentPage={currentPage} onChangePage={onChangePage} />
 				</div>
