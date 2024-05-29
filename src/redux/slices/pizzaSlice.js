@@ -1,13 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const fetchPizzaStatus = createAsyncThunk('users/fetchPizzaStatus', async params => {
-	const { currentPage, category, sortBy, order, search } = params
-	const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+export const fetchPizzaStatus = createAsyncThunk(
+	'users/fetchPizzaStatus',
+	async (params, thunkApi) => {
+		const { currentPage, category, sortBy, order, search } = params
+		const API_URL = `https://664b8e2535bbda10987d5fa1.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
 
-	const { data } = await axios.get(API_URL)
-	return data
-})
+		const { data } = await axios.get(API_URL)
+		return data
+	},
+)
 
 const initialState = {
 	items: [],
@@ -38,6 +41,8 @@ export const pizzaSlice = createSlice({
 			})
 	},
 })
+
+export const selectPizza = state => state.pizza
 
 export const { setPizza } = pizzaSlice.actions
 

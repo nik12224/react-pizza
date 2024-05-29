@@ -1,25 +1,30 @@
-import React, { useEffect, useContext, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import qs from 'qs'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice'
-import { SearchContext } from '../App'
-import { fetchPizzaStatus } from '../redux/slices/pizzaSlice'
+import {
+	selectFilter,
+	setCategoryId,
+	setCurrentPage,
+	setFilters,
+} from '../redux/slices/filterSlice'
+// import { SearchContext } from '../App'
+import { fetchPizzaStatus, selectPizza } from '../redux/slices/pizzaSlice'
 import { Categories, Pizza, Sort } from '../components'
 import { sortList } from '../components/Sort/index'
 import Loader from '../components/Pizzas/Loader'
 import Paginate from '../components/Paginate/Paginate'
 
 const Home = () => {
-	const { categoryId, sort, currentPage } = useSelector(state => state.filter)
-	const { items, status } = useSelector(state => state.pizza)
+	const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter)
+	const { items, status } = useSelector(selectPizza)
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const isSearch = useRef(false)
 	const isMounted = useRef(false)
 
-	const { searchValue } = useContext(SearchContext)
+	// const { searchValue } = useContext(SearchContext)
 	// const [piza, setPizza] = useState([])
 	// const [error, setError] = useState('')
 	// const [isLoading, setIsLoading] = useState(true)
