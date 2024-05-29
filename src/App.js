@@ -17,8 +17,8 @@ function App() {
 			<div className="wrapper">
 				<Routes>
 					<Route path="/react-pizza" element={<MainLayout />}>
-						<Route path="/react-pizza" element={<Home />}></Route>
-						<Route path="/react-pizza/cart" element={<Cart />}></Route>
+						<Route path="" element={<Home />}></Route>
+						<Route path="cart" element={<Cart />}></Route>
 						<Route path="*" element={<NotFound />}></Route>
 					</Route>
 				</Routes>
