@@ -4,11 +4,21 @@ import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 
 const typeNames = ['тонкое', 'традиционное']
 
-export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
+export interface PizzaProps {
+	imageUrl: string
+	title: string
+	types: []
+	sizes: []
+	price: number
+	rating: []
+	id: number
+}
+
+export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }: PizzaProps) => {
 	const dispatch = useDispatch()
 	const cartItem = useSelector(selectCartItemById(id))
-	const [sizePizza, setSizePizza] = useState(0)
-	const [typePizza, setTypePizza] = useState(0)
+	const [sizePizza, setSizePizza] = useState<number>(0)
+	const [typePizza, setTypePizza] = useState<number>(0)
 
 	const addedCount = cartItem ? cartItem.count : 0
 
@@ -33,7 +43,9 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
 					<ul>
 						{types.map(index => {
 							return (
-								<li onClick={() => setTypePizza(index)} className={typePizza === index && 'active'}>
+								<li
+									onClick={() => setTypePizza(index)}
+									className={typePizza === index ? 'active' : undefined}>
 									{typeNames[index]}
 								</li>
 							)
@@ -42,7 +54,9 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }) => {
 					<ul>
 						{sizes.map((size, index) => {
 							return (
-								<li onClick={() => setSizePizza(index)} className={sizePizza === index && 'active'}>
+								<li
+									onClick={() => setSizePizza(index)}
+									className={sizePizza === index ? 'active' : undefined}>
 									{size} см.
 								</li>
 							)
