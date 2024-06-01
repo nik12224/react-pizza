@@ -15,7 +15,7 @@ import { sortList } from '../components/Sort/index'
 import Loader from '../components/Pizzas/Loader'
 import Paginate from '../components/Paginate/Paginate'
 
-const Home = () => {
+const Home: React.FC = () => {
 	const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter)
 	const { items, status } = useSelector(selectPizza)
 
@@ -35,11 +35,11 @@ const Home = () => {
 	// 	sortProperty: 'rating',
 	// })
 
-	const onChangeCategory = id => {
+	const onChangeCategory = (id: number) => {
 		dispatch(setCategoryId(id))
 	}
 
-	const onChangePage = number => {
+	const onChangePage = (number: number) => {
 		dispatch(setCurrentPage(number))
 	}
 
@@ -58,6 +58,7 @@ const Home = () => {
 		// 	.finally(() => setIsLoading(false))
 		// const { data } = axios.get(API_URL)
 		dispatch(
+			// @ts-ignore
 			fetchPizzaStatus({
 				currentPage,
 				category,
@@ -110,7 +111,7 @@ const Home = () => {
 	// }
 
 	const skeletons = [...new Array(8)].map((_, index) => <Loader key={index} />)
-	const pizzas = items.map(pizza => <Pizza key={pizza.id} {...pizza} />)
+	const pizzas = items.map((pizza: any) => <Pizza key={pizza.id} {...pizza} />)
 
 	return (
 		<div className="content">

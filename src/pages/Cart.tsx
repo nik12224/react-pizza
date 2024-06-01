@@ -1,15 +1,13 @@
-import React from 'react'
-// import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import CartItem from '../components/CartItem'
 import { clearItem, selectCart } from '../redux/slices/cartSlice'
 import CartEmpty from '../components/CartEmpty'
 import { Link } from 'react-router-dom'
 
-const Cart = () => {
+const Cart: React.FC = () => {
 	const dispatch = useDispatch()
 	const { totalPrice, items } = useSelector(selectCart)
-	const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+	const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0)
 
 	const onClickClear = () => {
 		if (window.confirm('Очистить корзину?')) {
@@ -90,7 +88,7 @@ const Cart = () => {
 							</div>
 						</div>
 						<div className="content__items content__cart--items">
-							{items.map(item => (
+							{items.map((item: any) => (
 								<CartItem key={item.id} {...item} />
 							))}
 						</div>
@@ -133,24 +131,6 @@ const Cart = () => {
 				)}
 			</div>
 		</div>
-		// <div classNameName="content">
-		// 	<div classNameName="container container--cart">
-		// 		<div classNameName="cart cart--empty">
-		// 			<h2>
-		// 				Корзина пустая <icon>😕</icon>
-		// 			</h2>
-		// 			<p>
-		// 				Вероятней всего, вы не заказывали ещё пиццу.
-		// 				<br />
-		// 				Для того, чтобы заказать пиццу, перейди на главную страницу.
-		// 			</p>
-		// 			<img src={emptyCart} alt="Empty cart" />
-		// 			<Link to="/react-pizza" classNameName="button button--black">
-		// 				Вернуться назад
-		// 			</Link>
-		// 		</div>
-		// 	</div>
-		// </div>
 	)
 }
 

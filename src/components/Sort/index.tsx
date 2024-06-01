@@ -35,28 +35,15 @@ export const Sort = () => {
 	}
 
 	useEffect(() => {
-		const handleBodyClick = (event: any) => {
-			// Получаем текущий элемент, на который был совершен клик
-			let target = event.target
-			// Проверяем, является ли цель события или ее родительский элемент элементом, на который указывает sortRef
-			while (target !== null) {
-				if (target === sortRef.current) {
-					// Если цель события - это тот самый элемент, мы ничего не делаем и прерываем цикл
-					return
-				}
-				target = target.parentNode // Переходим к родительскому элементу
+		const handleClickOutside = (event: MouseEvent) => {
+			if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
+				setOpen(false)
 			}
-			// Если мы дошли до конца цикла и не нашли совпадения, значит, клик произошел вне интересующего нас элемента
-			setOpen(false)
-			// Здесь можно добавить логику, которую нужно выполнить при клике вне sortRef.current
 		}
 
-		// Добавляем обработчик событий клика к body
-		document.body.addEventListener('click', handleBodyClick)
+		document.body.addEventListener('click', handleClickOutside)
 
-		return () => {
-			document.body.removeEventListener('click', handleBodyClick)
-		}
+		return () => document.body.removeEventListener('click', handleClickOutside)
 	}, [])
 
 	// console.log(sortRef)
