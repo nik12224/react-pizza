@@ -4,7 +4,7 @@ import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 
 const typeNames = ['тонкое', 'традиционное']
 
-export interface PizzaProps {
+type PizzaProps = {
 	imageUrl: string
 	title: string
 	types: []

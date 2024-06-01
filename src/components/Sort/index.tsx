@@ -3,7 +3,12 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectSort, setSort } from '../../redux/slices/filterSlice'
 
-export const sortList = [
+type sortItem = {
+	name: string
+	sortProperty: string
+}
+
+export const sortList: sortItem[] = [
 	{ name: 'популярности (DESC)', sortProperty: 'rating' },
 	{ name: 'популярности (ASC)', sortProperty: '-rating' },
 	{ name: 'цене (DESC)', sortProperty: 'price' },
@@ -14,7 +19,7 @@ export const sortList = [
 
 export const Sort = () => {
 	const sort = useSelector(selectSort)
-	const sortRef = useRef()
+	const sortRef = useRef(null)
 
 	const dispatch = useDispatch()
 
@@ -24,16 +29,15 @@ export const Sort = () => {
 
 	const [open, setOpen] = useState(false)
 
-	const onClickListItem = obj => {
+	const onClickListItem = (obj: sortItem) => {
 		dispatch(setSort(obj))
 		setOpen(false)
 	}
 
 	useEffect(() => {
-		const handleBodyClick = event => {
+		const handleBodyClick = (event: any) => {
 			// Получаем текущий элемент, на который был совершен клик
 			let target = event.target
-
 			// Проверяем, является ли цель события или ее родительский элемент элементом, на который указывает sortRef
 			while (target !== null) {
 				if (target === sortRef.current) {
@@ -42,9 +46,7 @@ export const Sort = () => {
 				}
 				target = target.parentNode // Переходим к родительскому элементу
 			}
-
 			// Если мы дошли до конца цикла и не нашли совпадения, значит, клик произошел вне интересующего нас элемента
-			console.log('Клик по body, кроме sortRef.current')
 			setOpen(false)
 			// Здесь можно добавить логику, которую нужно выполнить при клике вне sortRef.current
 		}
@@ -84,7 +86,7 @@ export const Sort = () => {
 								onClick={() => {
 									onClickListItem(obj)
 								}}
-								className={sort.sortProperty === obj.sortProperty && 'active'}>
+								className={sort.sortProperty === obj.sortProperty ? 'active' : undefined}>
 								{obj.name}
 							</li>
 						)

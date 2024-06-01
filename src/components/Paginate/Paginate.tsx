@@ -1,10 +1,13 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react'
 import ReactPaginate from 'react-paginate'
 import styles from './Paginate.module.scss'
 
-const Paginate = ({ onChangePage, currentPage }) => {
+type PaginateProps = {
+	onChangePage: any
+	currentPage: number
+}
+
+const Paginate: React.FC<PaginateProps> = ({ onChangePage, currentPage }) => {
 	return (
 		<ReactPaginate
 			className={styles.root}
