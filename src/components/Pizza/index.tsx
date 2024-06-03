@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
+import { CartItemType, addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 
 const typeNames = ['тонкое', 'традиционное']
 
 type PizzaProps = {
 	imageUrl: string
 	title: string
-	types: []
-	sizes: []
+	types: number[]
+	sizes: number[]
 	price: number
-	rating: []
-	id: number
+	rating: number
+	id: string
 }
 
 export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }: PizzaProps) => {
@@ -23,13 +23,14 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }: Pizz
 	const addedCount = cartItem ? cartItem.count : 0
 
 	const onClickAdd = () => {
-		const item = {
+		const item: CartItemType = {
 			id,
 			title,
 			price,
 			imageUrl,
 			type: typeNames[typePizza],
 			size: sizes[sizePizza],
+			count: 0,
 		}
 		dispatch(addItem(item))
 	}

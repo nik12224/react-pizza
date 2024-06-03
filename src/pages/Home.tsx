@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import qs from 'qs'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
 	selectFilter,
@@ -9,17 +9,18 @@ import {
 	setFilters,
 } from '../redux/slices/filterSlice'
 // import { SearchContext } from '../App'
-import { fetchPizzaStatus, selectPizza } from '../redux/slices/pizzaSlice'
+import { SearchPizzaType, fetchPizzaStatus, selectPizza } from '../redux/slices/pizzaSlice'
 import { Categories, Pizza, Sort } from '../components'
 import { sortList } from '../components/Sort/index'
 import Loader from '../components/Pizzas/Loader'
 import Paginate from '../components/Paginate/Paginate'
+import { useAppDispatch } from '../redux/store'
 
 const Home: React.FC = () => {
 	const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter)
 	const { items, status } = useSelector(selectPizza)
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const isSearch = useRef(false)
 	const isMounted = useRef(false)
@@ -43,7 +44,7 @@ const Home: React.FC = () => {
 		dispatch(setCurrentPage(number))
 	}
 
-	const getPizza = () => {
+	const getPizza = async () => {
 		const category = categoryId > 0 ? `category=${categoryId}` : ''
 		const sortBy = sort.sortProperty.replace('-', '')
 		const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
@@ -58,9 +59,8 @@ const Home: React.FC = () => {
 		// 	.finally(() => setIsLoading(false))
 		// const { data } = axios.get(API_URL)
 		dispatch(
-			// @ts-ignore
 			fetchPizzaStatus({
-				currentPage,
+				currentPage: String(currentPage),
 				category,
 				sortBy,
 				order,
@@ -70,40 +70,38 @@ const Home: React.FC = () => {
 		window.scrollTo(0, 0)
 	}
 
-	useEffect(() => {
-		if (isMounted.current) {
-			const queryString = qs.stringify({
-				sortProperty: sort.sortProperty,
-				categoryId,
-				currentPage,
-			})
+	// useEffect(() => {
+	// 	if (isMounted.current) {
+	// 		const queryString = qs.stringify({
+	// 			sortProperty: sort.sortProperty,
+	// 			categoryId,
+	// 			currentPage,
+	// 		})
 
-			navigate(`?${queryString}`)
-		}
-		isMounted.current = true
-	}, [categoryId, sort.sortProperty, currentPage, navigate])
+	// 		navigate(`?${queryString}`)
+	// 	}
+	// 	isMounted.current = true
+	// }, [categoryId, sort.sortProperty, currentPage, navigate])
 
-	useEffect(() => {
-		if (window.location.search) {
-			const params = qs.parse(window.location.search.substring(1))
-			const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
-			dispatch(
-				setFilters({
-					...params,
-					sort,
-				}),
-			)
-			isSearch.current = true
-		}
-	}, [dispatch])
+	// useEffect(() => {
+	// 	if (window.location.search) {
+	// 		const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaType
+	// 		const sort = sortList.find(obj => obj.sortProperty === params.sortBy)
+	// 		dispatch(
+	// 			setFilters({
+	// 				searchValue: params.search,
+	// 				categoryId: Number(params.category),
+	// 				currentPage: Number(params.currentPage),
+	// 				sort: sort ? sort : sortList[0],
+	// 			}),
+	// 		)
+	// 	}
+	// 	isSearch.current = true
+	// }, [dispatch])
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
-		if (!isSearch.current) {
-			getPizza()
-		}
-
-		isSearch.current = false
+		getPizza()
 	}, [categoryId, sort.sortProperty, searchValue, currentPage])
 
 	// if (error) {

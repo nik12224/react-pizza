@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectSort, setSort } from '../../redux/slices/filterSlice'
+import { SortProperty, selectSort, setSort } from '../../redux/slices/filterSlice'
 
 type sortItem = {
 	name: string
-	sortProperty: string
+	sortProperty: SortProperty
 }
 
 export const sortList: sortItem[] = [
-	{ name: 'популярности (DESC)', sortProperty: 'rating' },
-	{ name: 'популярности (ASC)', sortProperty: '-rating' },
-	{ name: 'цене (DESC)', sortProperty: 'price' },
-	{ name: 'цене (ASC)', sortProperty: '-price' },
-	{ name: 'алфавиту (DESC)', sortProperty: 'title' },
-	{ name: 'алфавиту (ASC)', sortProperty: '-title' },
+	{ name: 'популярности (DESC)', sortProperty: SortProperty.RATING_DESC },
+	{ name: 'популярности (ASC)', sortProperty: SortProperty.RATING_ASC },
+	{ name: 'цене (DESC)', sortProperty: SortProperty.PRICE_DESC },
+	{ name: 'цене (ASC)', sortProperty: SortProperty.PRICE_ASC },
+	{ name: 'алфавиту (DESC)', sortProperty: SortProperty.TITLE_DESC },
+	{ name: 'алфавиту (ASC)', sortProperty: SortProperty.TITLE_ASC },
 ]
 
 export const Sort = () => {
