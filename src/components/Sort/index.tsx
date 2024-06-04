@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState, useRef, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { SortProperty, selectSort, setSort } from '../../redux/slices/filterSlice'
+import React, { useState, useRef, useEffect, memo } from 'react'
+import { useDispatch } from 'react-redux'
+import { SortProperty, SortType, setSort } from '../../redux/slices/filterSlice'
 
 type sortItem = {
 	name: string
@@ -17,15 +16,14 @@ export const sortList: sortItem[] = [
 	{ name: 'алфавиту (ASC)', sortProperty: SortProperty.TITLE_ASC },
 ]
 
-export const Sort = () => {
-	const sort = useSelector(selectSort)
+type SortPropType = {
+	value: SortType
+}
+
+export const Sort: React.FC<SortPropType> = memo(({ value }) => {
 	const sortRef = useRef(null)
 
 	const dispatch = useDispatch()
-
-	// const onChangeSortType = id => {
-	// 	dispatch(setSort(id))
-	// }
 
 	const [open, setOpen] = useState(false)
 
@@ -46,8 +44,6 @@ export const Sort = () => {
 		return () => document.body.removeEventListener('click', handleClickOutside)
 	}, [])
 
-	// console.log(sortRef)
-
 	return (
 		<div ref={sortRef} className="sort">
 			<div className="sort__label">
@@ -63,7 +59,7 @@ export const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => setOpen(!open)}>{sort.name}</span>
+				<span onClick={() => setOpen(!open)}>{value.name}</span>
 			</div>
 			<div className={`sort__popup ${open ? 'active' : ''}`}>
 				<ul>
@@ -73,7 +69,8 @@ export const Sort = () => {
 								onClick={() => {
 									onClickListItem(obj)
 								}}
-								className={sort.sortProperty === obj.sortProperty ? 'active' : undefined}>
+								className={value.sortProperty === obj.sortProperty ? 'active' : undefined}
+								key={index}>
 								{obj.name}
 							</li>
 						)
@@ -82,4 +79,4 @@ export const Sort = () => {
 			</div>
 		</div>
 	)
-}
+})

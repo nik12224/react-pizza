@@ -46,7 +46,8 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }: Pizz
 							return (
 								<li
 									onClick={() => setTypePizza(index)}
-									className={typePizza === index ? 'active' : undefined}>
+									className={typePizza === index ? 'active' : undefined}
+									key={index}>
 									{typeNames[index]}
 								</li>
 							)
@@ -57,7 +58,8 @@ export const Pizza = ({ imageUrl, title, types, sizes, price, rating, id }: Pizz
 							return (
 								<li
 									onClick={() => setSizePizza(index)}
-									className={sizePizza === index ? 'active' : undefined}>
+									className={sizePizza === index ? 'active' : undefined}
+									key={index}>
 									{size} см.
 								</li>
 							)
